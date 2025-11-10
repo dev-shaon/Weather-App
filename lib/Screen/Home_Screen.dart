@@ -12,6 +12,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -19,8 +21,56 @@ class _HomeScreenState extends State<HomeScreen> {
       Provider.of<WeatherProvider>(
         context,
         listen: false,
-      ).getWeather("jessore"); //location add korate hobe aikhane
+      ).getWeather("Khulna"); // Default location
     });
+  }
+
+  // 🔹 Function: location search dialog
+  void _showSearchDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color.fromARGB(255, 15, 18, 54),
+        title: const Text(
+          "Enter Location",
+          style: TextStyle(color: Colors.white),
+        ),
+        content: TextField(
+          controller: _searchController,
+          style: const TextStyle(color: Colors.white),
+          decoration: const InputDecoration(
+            hintText: "e.g. Dhaka",
+            hintStyle: TextStyle(color: Colors.grey),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.blueAccent),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Cancel", style: TextStyle(color: Colors.red)),
+          ),
+          TextButton(
+            onPressed: () {
+              final location = _searchController.text.trim();
+              if (location.isNotEmpty) {
+                Provider.of<WeatherProvider>(context, listen: false)
+                    .getWeather(location);
+              }
+              Navigator.pop(context);
+            },
+            child:
+                const Text("Search", style: TextStyle(color: Colors.lightBlue)),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -36,12 +86,17 @@ class _HomeScreenState extends State<HomeScreen> {
           icon: const Icon(Icons.widgets, color: Colors.white),
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.toggle_off_sharp,
-              size: 50,
-              color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: IconButton(
+              onPressed: () {
+                _showSearchDialog(context); // 🔹 Search Dialog Open
+              },
+              icon: const Icon(
+                Icons.search,
+                size: 30,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
@@ -77,9 +132,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 12),
-                  Image(image: AssetImage("assets/images/weatherOne.png")),
-
+                  const SizedBox(height: 12),
+                  const Image(image: AssetImage("assets/images/weatherOne.png")),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -172,12 +226,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Today",
                         style: TextStyle(
                           color: Colors.white,
@@ -185,22 +238,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-
                       TextButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Detailsscreen(),
+                              builder: (context) => const Detailsscreen(),
                             ),
                           );
                         },
-                        child: Text("View Full Report"),
+                        child: const Text(
+                          "View Full Report",
+                          style: TextStyle(color: Colors.blueAccent),
+                        ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 16),
-                  CloudWidgets(),
+                  const SizedBox(height: 16),
+                  const CloudWidgets(),
                 ],
               ),
             ),

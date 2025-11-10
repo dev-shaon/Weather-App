@@ -5,6 +5,7 @@ class WeatherModel {
   final double windMph;
   final int humidity;
   final String condition;
+  final List<dynamic>? forecastDays; 
 
   WeatherModel({
     required this.city,
@@ -13,16 +14,20 @@ class WeatherModel {
     required this.windMph,
     required this.humidity,
     required this.condition,
+    this.forecastDays,
   });
 
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
     return WeatherModel(
-      city: json['location']['name'],
-      localtime: json['location']['localtime'],
-      tempC: (json['current']['temp_c'] as num).toDouble(),
-      windMph: (json['current']['wind_mph'] as num).toDouble(),
-      humidity: (json['current']['humidity'] as num).toInt(),
-      condition: json['current']['condition']['text'],
+      city: json['location']['name'] ?? '',
+      localtime: json['location']['localtime'] ?? '',
+      tempC: (json['current']['temp_c'] ?? 0).toDouble(),
+      windMph: (json['current']['wind_mph'] ?? 0).toDouble(),
+      humidity: json['current']['humidity'] ?? 0,
+      condition: json['current']['condition']['text'] ?? '',
+      forecastDays: json['forecast'] != null
+          ? json['forecast']['forecastday'] as List<dynamic>
+          : [],
     );
   }
 }
