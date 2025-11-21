@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'WeatherService.dart';
-import 'Weather_modle.dart';
+import 'package:weather_app/Services/MOdel/ForecastDay.dart';
+import 'package:weather_app/Services/MOdel/Weather_modle.dart';
+import 'package:weather_app/Services/Service/WeatherService.dart';
 
 class WeatherProvider extends ChangeNotifier {
   final WeatherService _services = WeatherService();
@@ -9,8 +10,7 @@ class WeatherProvider extends ChangeNotifier {
   WeatherModel? weather;
   bool isLoading = false;
 
-  // 🔹 7 দিনের forecast রাখার জন্য
-  List<dynamic> forecastDays = [];
+  List<ForecastDay> forecastDays = [];
 
   Future<void> getWeather(String city) async {
     isLoading = true;
@@ -19,10 +19,9 @@ class WeatherProvider extends ChangeNotifier {
     try {
       weather = await service.fetchWeather(city);
 
-      // 🔹 forecast data
       forecastDays = weather?.forecastDays ?? [];
     } catch (e) {
-      debugPrint("Error fetching weather: $e");
+      debugPrint(" Error fetching weather: $e");
     }
 
     isLoading = false;

@@ -1,3 +1,5 @@
+import 'package:weather_app/Services/MOdel/ForecastDay.dart';
+
 class WeatherModel {
   final String city;
   final String localtime;
@@ -5,7 +7,7 @@ class WeatherModel {
   final double windMph;
   final int humidity;
   final String condition;
-  final List<dynamic>? forecastDays; 
+  final List<ForecastDay> forecastDays;
 
   WeatherModel({
     required this.city,
@@ -14,7 +16,7 @@ class WeatherModel {
     required this.windMph,
     required this.humidity,
     required this.condition,
-    this.forecastDays,
+    required this.forecastDays,
   });
 
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
@@ -25,9 +27,11 @@ class WeatherModel {
       windMph: (json['current']['wind_mph'] ?? 0).toDouble(),
       humidity: json['current']['humidity'] ?? 0,
       condition: json['current']['condition']['text'] ?? '',
-      forecastDays: json['forecast'] != null
-          ? json['forecast']['forecastday'] as List<dynamic>
-          : [],
+      forecastDays: (json['forecast']['forecastday'] as List)
+          .map((day) => ForecastDay.fromJson(day))
+          .toList(),
     );
   }
 }
+
+

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/Screen/detailsScreen.dart';
-import 'package:weather_app/cloudWigets.dart';
-import '../Services/Weather_Provider.dart';
+import 'package:weather_app/Services/Provider/Weather_Provider.dart';
+import 'package:weather_app/Wiget/cloudWigets.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,11 +22,10 @@ class _HomeScreenState extends State<HomeScreen> {
       Provider.of<WeatherProvider>(
         context,
         listen: false,
-      ).getWeather("Khulna"); // Default location
+      ).getWeather("Khulna");
     });
   }
 
-  // 🔹 Function: location search dialog
   void _showSearchDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.all(10),
             child: IconButton(
               onPressed: () {
-                _showSearchDialog(context); // 🔹 Search Dialog Open
+                _showSearchDialog(context); 
               },
               icon: const Icon(
                 Icons.search,
@@ -243,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const Detailsscreen(),
+                              builder: (context) =>  Detailsscreen(),
                             ),
                           );
                         },
@@ -255,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  const CloudWidgets(),
+                   CloudWidgets(),
                 ],
               ),
             ),

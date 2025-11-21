@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:weather_app/Services/Weather_Provider.dart';
-import 'package:weather_app/cloudWigets.dart';
+import 'package:weather_app/Services/Provider/Weather_Provider.dart';
+import 'package:weather_app/Wiget/cloudWigets.dart';
 
 class Detailsscreen extends StatefulWidget {
   const Detailsscreen({super.key});
@@ -14,6 +14,10 @@ class _DetailsscreenState extends State<Detailsscreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<WeatherProvider>(context);
+
+    final tomorrow = provider.forecastDays.length > 1
+        ? provider.forecastDays[1]
+        : null;
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 2, 4, 33),
@@ -55,24 +59,27 @@ class _DetailsscreenState extends State<Detailsscreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "Tomorrow",
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+
                           Text(
-                            provider.weather?.condition ?? "Condition",
+                            tomorrow?.condition ?? "No Data",
                             style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 14,
                             ),
                           ),
+
                           const SizedBox(height: 12),
+
                           Text(
-                            "${provider.weather?.tempC.toStringAsFixed(0) ?? '0'}°",
+                            "${tomorrow?.maxTemp.toStringAsFixed(0) ?? '0'}°",
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 50,
@@ -83,7 +90,9 @@ class _DetailsscreenState extends State<Detailsscreen> {
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 20),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -101,7 +110,9 @@ class _DetailsscreenState extends State<Detailsscreen> {
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 22),
+
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -115,7 +126,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
                       ),
                     ],
                   ),
-                  const WeeklyData(), // তোমার আগের UI থাকবে
+
+                  Expanded(child: WeeklyData()),
                 ],
               ),
             ),

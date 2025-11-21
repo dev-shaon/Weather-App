@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weather_app/Services/Provider/Weather_Provider.dart';
 
 class CloudWidgets extends StatelessWidget {
   const CloudWidgets({super.key});
@@ -48,73 +50,31 @@ class WeeklyData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(height: 20,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-          Text("Tue",style: TextStyle(color: Colors.grey,fontSize: 18),),
-          Text("⛅ Rainy",style: TextStyle(color: Colors.grey,fontSize: 18),),
-          Text("+14°",style: TextStyle(color: Colors.white,fontSize: 18),),
-          Text("32km/h",style: TextStyle(color: Colors.white,fontSize: 18),),
-        ],),
-        SizedBox(height: 17,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-          Text("Sat",style: TextStyle(color: Colors.grey,fontSize: 18),),
-          Text("🌧️ Rainy",style: TextStyle(color: Colors.grey,fontSize: 18),),
-          Text("+14°",style: TextStyle(color: Colors.white,fontSize: 18),),
-          Text("32km/h",style: TextStyle(color: Colors.white,fontSize: 18),),
-        ],),
-        SizedBox(height: 17,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-          Text("Sun",style: TextStyle(color: Colors.grey,fontSize: 18),),
-          Text("🌧️ Rainy",style: TextStyle(color: Colors.grey,fontSize: 18),),
-          Text("+14°",style: TextStyle(color: Colors.white,fontSize: 18),),
-          Text("10km/h",style: TextStyle(color: Colors.white,fontSize: 18),),
-        ],),
-        SizedBox(height: 17,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-          Text("Mon",style: TextStyle(color: Colors.grey,fontSize: 18),),
-          Text("☁️ Rainy",style: TextStyle(color: Colors.grey,fontSize: 18),),
-          Text("+24°",style: TextStyle(color: Colors.white,fontSize: 18),),
-          Text("12km/h",style: TextStyle(color: Colors.white,fontSize: 18),),
-        ],),
-        SizedBox(height: 17,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-          Text("Tue",style: TextStyle(color: Colors.grey,fontSize: 18),),
-          Text("⚡Thunder",style: TextStyle(color: Colors.grey,fontSize: 18),),
-          Text("+27°",style: TextStyle(color: Colors.white,fontSize: 18),),
-          Text("22km/h",style: TextStyle(color: Colors.white,fontSize: 18),),
-        ],),
-        SizedBox(height: 17,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-          Text("Wed",style: TextStyle(color: Colors.grey,fontSize: 18),),
-          Text("☀️ Snow",style: TextStyle(color: Colors.grey,fontSize: 18),),
-          Text("+30°",style: TextStyle(color: Colors.white,fontSize: 18),),
-          Text("32km/h",style: TextStyle(color: Colors.white,fontSize: 18),),
-        ],),
-        SizedBox(height: 17,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-          Text("fri",style: TextStyle(color: Colors.grey,fontSize: 18),),
-          Text("🌤️ Sunny",style: TextStyle(color: Colors.grey,fontSize: 18),),
-          Text("+33°",style: TextStyle(color: Colors.white,fontSize: 18),),
-          Text("32km/h",style: TextStyle(color: Colors.white,fontSize: 18),),
-        ],),
-        SizedBox(height: 17,),
-      ],
+    final provider = Provider.of<WeatherProvider>(context);
+
+    if (provider.forecastDays.isEmpty) {
+      return const Center(
+        child: Text("No forecast data", style: TextStyle(color: Colors.white)),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: provider.forecastDays.length,
+      itemBuilder: (context, index) {
+        final day = provider.forecastDays[index];
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(day.date, style: const TextStyle(color: Colors.grey, fontSize: 18)),
+              Text(day.condition, style: const TextStyle(color: Colors.grey, fontSize: 18)),
+              Text("${day.maxTemp.toStringAsFixed(0)}°", style: const TextStyle(color: Colors.white, fontSize: 18)),
+              Text("22km/h", style: const TextStyle(color: Colors.white, fontSize: 18)),
+            ],
+          ),
+        );
+      },
     );
   }
 }
