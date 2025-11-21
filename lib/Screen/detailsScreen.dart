@@ -117,7 +117,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "In 7 Days",
+                        "Next Days",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
